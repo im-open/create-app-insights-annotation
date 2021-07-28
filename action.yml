@@ -1,22 +1,66 @@
-name: 'Composite Run Steps Action Template'
+name: 'create-app-insights-annotation'
 
-description: 'Add description here'
+description: 'An action to create an annotation in Azure App Insights flagging any event you like.'
 
 inputs:
-  input-1:
-    description: 'Add a description here'
+  subscriptionId:
+    description: 'The subscription ID where this annotation will be made.  Used to build the App Insights ID.'
     required: true
-
-outputs:
-  output-1:
-    description: 'Add description here'
-    value: '${{ steps.step_1.outputs.world }}'
+  resourceGroupName:
+    description: 'The name of the Resource Group containing the App Insights resource.  Used to build the App Insights ID.'
+    required: true
+  appInsightsResourceName:
+    description: 'The name of the Azure App Insights resource.  Used to build the App Insights ID.'
+    required: true
+  releaseName:
+    description: 'The name to give the created release annotation.'
+    required: true
+    default: ${{ github.run_id }}
+  category:
+    description: 'The category of annotation.'
+    required: true
+    default: Deployment
+  customMetadata:
+    description: 'Comma-separated list of name-value pairs used to attach custom metadata to the annotation.  For example: "ProjectName=My Project,DeployedBy=DA'
+    required: false
 
 runs:
   using: 'composite'
   steps:
-    - name: Step 1
-      id: step_1
-      shell: bash
+    - name: create-annotation
+      shell: pwsh
       run: |
-        echo "::set-output name=hello::world"
+        $subscriptionId = "${{ inputs.subscriptionId }}" 
+        $resourceGroupName = "${{ inputs.resourceGroupName  }}" 
+        $appInsightsResourceName = "${{ inputs.appInsightsResourceName }}" 
+        $releaseName = "${{ inputs.releaseName }}" 
+
+        $rawMetadataInput = "${{ inputs.customMetadata }}"
+        $metadataIsEmpty = [string]::IsNullOrEmpty($rawMetadataInput);
+        $properties = @{}
+
+        if ($metadataIsEmpty){
+          Write-Host "Custom Metadata is empty"
+        }
+        else {
+          Write-Host "Custom Metadata is NOT empty"
+          $nameValuePairs = $rawMetadataInput.Split(',');
+          Foreach($pair in $nameValuePairs) {
+            $pairParts = $pair.Split('=')
+            $properties.Add($pairParts[0], $pairParts[1])
+          }  
+        }
+
+        $aiResourceId = "/subscriptions/$($subscriptionId)/resourceGroups/$($resourceGroupName)/providers/microsoft.insights/components/$($appInsightsResourceName)"
+        $annotation = @{
+            Id             = [GUID]::NewGuid();
+            AnnotationName = $releaseName;
+            EventTime      = (Get-Date).ToUniversalTime().GetDateTimeFormats("s")[0];
+            Category       = "${{ inputs.category }}";
+            Properties     = ConvertTo-Json $properties -Compress
+        }
+
+        $body = (ConvertTo-Json $annotation -Compress) -replace '(\\+)"', '$1$1"' -replace "`"", "`"`""
+        Write-Host "Request Body:"
+        Write-Host $body
+        az rest --method put --uri "$($aiResourceId)/Annotations?api-version=2015-05-01" --body "$($body) "
