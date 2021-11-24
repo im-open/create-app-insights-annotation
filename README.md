@@ -6,6 +6,15 @@ Prior to using this action, you need to be logged into Azure.  By default, this 
 
 This action runs the steps described in Microsoft's [Create release annotations with Azure CLI] document.  Additional information can be found on that page for [viewing the annotations] as well.
 
+## Index
+
+- [Inputs](#inputs)
+- [Example](#example)
+- [Contributing](#contributing)
+	- [Incrementing the Version](#incrementing-the-version)
+- [Code of Conduct](#code-of-conduct)
+- [License](#license)
+  
 ## Inputs
 | Parameter                 | Is Required | Default Value   | Description                                                                                                                                                           |
 | ------------------------- | ----------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -35,7 +44,7 @@ jobs:
       - uses: deploy-release-for-demoapp14.sh
 
       - name: Annotate the release
-        uses: im-open/create-app-insights-annotation@v1.0.0
+        uses: im-open/create-app-insights-annotation@v1.0.1
         with:
           subscriptionId: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP }}
@@ -46,6 +55,24 @@ jobs:
 ```
 
 
+## Contributing
+
+When creating new PRs please ensure:
+1. For major or minor changes, at least one of the commit messages contains the appropriate `+semver:` keywords listed under [Incrementing the Version](#incrementing-the-version).
+2. The `README.md` example has been updated with the new version.  See [Incrementing the Version](#incrementing-the-version).
+3. The action code does not contain sensitive information.
+
+### Incrementing the Version
+
+This action uses [git-version-lite] to examine commit messages to determine whether to perform a major, minor or patch increment on merge.  The following table provides the fragment that should be included in a commit message to active different increment strategies.
+| Increment Type | Commit Message Fragment                     |
+| -------------- | ------------------------------------------- |
+| major          | +semver:breaking                            |
+| major          | +semver:major                               |
+| minor          | +semver:feature                             |
+| minor          | +semver:minor                               |
+| patch          | *default increment type, no comment needed* |
+
 ## Code of Conduct
 
 This project has adopted the [im-open's Code of Conduct](https://github.com/im-open/.github/blob/master/CODE_OF_CONDUCT.md).
@@ -54,5 +81,4 @@ This project has adopted the [im-open's Code of Conduct](https://github.com/im-o
 
 Copyright &copy; 2021, Extend Health, LLC. Code released under the [MIT license](LICENSE).
 
-[Create release annotations with Azure CLI]: https://docs.microsoft.com/en-us/azure/azure-monitor/app/annotations#create-release-annotations-with-azure-cli
-[viewing the annotations]: https://docs.microsoft.com/en-us/azure/azure-monitor/app/annotations#view-annotations
+[git-version-lite]: https://github.com/im-open/git-version-lite
