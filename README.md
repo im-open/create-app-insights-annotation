@@ -6,6 +6,8 @@ Prior to using this action, you need to be logged into Azure.  By default, this 
 
 This action runs the steps described in Microsoft's [Create release annotations with Azure CLI] document.  Additional information can be found on that page for [viewing the annotations] as well.
 
+## Index
+
 - [Inputs](#inputs)
 - [Example](#example)
 - [Contributing](#contributing)
