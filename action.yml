@@ -60,7 +60,7 @@ runs:
             Properties     = ConvertTo-Json $properties -Compress
         }
 
-        $body = (ConvertTo-Json $annotation -Compress) -replace '(\\+)"', '$1$1"' -replace "`"", "`"`""
+        $body = (ConvertTo-Json $annotation -Compress)
         Write-Host "Request Body:"
         Write-Host $body
-        az rest --method put --uri "$($aiResourceId)/Annotations?api-version=2015-05-01" --body "$($body) "
+        az rest --method put --uri "$($aiResourceId)/Annotations?api-version=2015-05-01" --body "$($body)" --headers "Content-Type=application/json"
