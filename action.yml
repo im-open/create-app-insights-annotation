@@ -1,6 +1,5 @@
-name: 'create-app-insights-annotation'
-
-description: 'An action to create an annotation in Azure App Insights flagging any event you like.'
+name: create-app-insights-annotation
+description: An action to create an annotation in Azure App Insights flagging any event you like.
 
 inputs:
   subscriptionId:
