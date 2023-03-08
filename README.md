@@ -44,6 +44,7 @@ jobs:
       - run: ./deploy-release-for-demoapp14.sh
 
       - name: Annotate the release
+        # You may also reference just the major or major.minor version
         uses: im-open/create-app-insights-annotation@v1.0.2
         with:
           subscriptionId: ${{ secrets.ARM_SUBSCRIPTION_ID }}
