@@ -44,7 +44,8 @@ jobs:
       - run: ./deploy-release-for-demoapp14.sh
 
       - name: Annotate the release
-        uses: im-open/create-app-insights-annotation@v1.0.2
+        # You may also reference just the major or major.minor version
+        uses: im-open/create-app-insights-annotation@v1.0.3
         with:
           subscriptionId: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP }}
