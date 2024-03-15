@@ -20,7 +20,8 @@ inputs:
     required: true
     default: Deployment
   customMetadata:
-    description: 'Comma-separated list of name-value pairs used to attach custom metadata to the annotation.  For example: "ProjectName=My Project,DeployedBy=DA'
+    description: |
+      Comma-separated list of name-value pairs used to attach custom metadata to the annotation.  For example: "ProjectName=My Project,DeployedBy=DA'
     required: false
 
 runs:
@@ -33,6 +34,7 @@ runs:
         $resourceGroupName = "${{ inputs.resourceGroupName  }}" 
         $appInsightsResourceName = "${{ inputs.appInsightsResourceName }}" 
         $releaseName = "${{ inputs.releaseName }}" 
+        $category = "${{ inputs.category }}"
 
         $rawMetadataInput = "${{ inputs.customMetadata }}"
         $metadataIsEmpty = [string]::IsNullOrEmpty($rawMetadataInput);
@@ -55,7 +57,7 @@ runs:
             Id             = [GUID]::NewGuid();
             AnnotationName = $releaseName;
             EventTime      = (Get-Date).ToUniversalTime().GetDateTimeFormats("s")[0];
-            Category       = "${{ inputs.category }}";
+            Category       = $category;
             Properties     = ConvertTo-Json $properties -Compress
         }
 
