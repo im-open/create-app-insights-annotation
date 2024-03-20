@@ -29,6 +29,7 @@ runs:
     - name: create-annotation
       shell: pwsh
       run: |
+        Write-Host "Hi Friends!"
         $subscriptionId = "${{ inputs.subscriptionId }}" 
         $resourceGroupName = "${{ inputs.resourceGroupName  }}" 
         $appInsightsResourceName = "${{ inputs.appInsightsResourceName }}" 
