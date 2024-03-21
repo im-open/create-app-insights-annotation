@@ -60,3 +60,18 @@ jobs:
       # The npm script to run to build the action.  This is typically 'npm run build' if the
       # action needs to be compiled.  For composite-run-steps actions this is typically empty.
       build-command: ''
+  kickoff-external-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          #github-token: ${{ secrets.PIPELINE_BOT_PAT }} # This is an org-level secret
+          script: |
+            github.rest.repos.createDispatchEvent({
+              owner: 'im-practices',
+              repo: 'internal-repo-for-testing-swat-actions',
+              event_type: 'create-app-insights-annotation-tests',
+              client_payload: {
+                action-ref: "${{ github.event.pull_request.head.ref }}"
+              }
+            });
