@@ -72,6 +72,6 @@ jobs:
               repo: 'internal-repo-for-testing-swat-actions',
               event_type: 'create-app-insights-annotation-tests',
               client_payload: {
-                action-ref: "${{ github.event.pull_request.head.ref }}"
+                'action-ref': "${{ github.event.pull_request.head.ref }}"
               }
             });
