@@ -72,6 +72,7 @@ jobs:
       DISPATCH_TYPE: 'create-app-insights-annotation-tests'
       EXTERNAL_ORG: 'im-practices'
       EXTERNAL_REPO: 'internal-repo-for-testing-swat-actions'
+      EXTERNAL_WORKFLOW: 'test-repo-dispatch.yml'
       
     steps:
       - name: Create ${{ github.event.pull_request.head.repo.fork && 'an error' || 'a pending' }} commit status
@@ -83,8 +84,9 @@ jobs:
             github.rest.repos.createCommitStatus({
               owner: '${{ env.ACTION_ORG }}',
               repo: '${{ env.ACTION_NAME }}',
-              sha: '${{ github.event.pull_request.head.sha }}}',
+              sha: '${{ github.event.pull_request.head.sha }}',
               context: '${{ env.COMMIT_STATUS_CONTEXT }}',
+              target_url: 'https://github.com/${{ env.EXTERNAL_ORG }}/${{ env.ACTION_NAME }}/actions/workflows/${{ env.EXTERNAL_WORKFLOW }}',
               state: isFork ? 'error' : 'pending',
               description: isFork ? 'Forks do not have permission to kick off external tests' : 'The external tests have been kicked off'
             });
