@@ -80,7 +80,6 @@ jobs:
       - name: Create ${{ github.event.pull_request.head.repo.fork && 'an error' || 'a pending' }} commit status
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.PIPELINE_BOT_PAT }} # This is an org-level secret
           script: |
             const isFork = ${{ github.event.pull_request.head.repo.fork }};
             github.rest.repos.createCommitStatus({
