@@ -75,6 +75,8 @@ jobs:
       EXTERNAL_WORKFLOW: 'test-repo-dispatch.yml'
       
     steps:
+      - run: echo "make my own forked change"
+
       - name: Create ${{ github.event.pull_request.head.repo.fork && 'an error' || 'a pending' }} commit status
         uses: actions/github-script@v7
         with:
