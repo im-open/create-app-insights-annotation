@@ -48,7 +48,7 @@ jobs:
 
       - name: Annotate the release
         # You may also reference just the major or major.minor version
-        uses: im-open/create-app-insights-annotation@v1.0.4
+        uses: im-open/create-app-insights-annotation@v1.0.3
         with:
           subscriptionId: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP }}
