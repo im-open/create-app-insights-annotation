@@ -1,5 +1,7 @@
 name: create-app-insights-annotation
-description: An action to create an annotation in Azure App Insights flagging any event you like.
+description: |
+  An action to create an annotation in Azure App Insights flagging any event you like.
+  Make a change to trigger a build.
 
 inputs:
   subscriptionId:
